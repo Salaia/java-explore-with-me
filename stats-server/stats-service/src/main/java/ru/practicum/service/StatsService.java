@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface StatsService {
     void hit(HitDto hitDto);
+
     List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris);
 }
