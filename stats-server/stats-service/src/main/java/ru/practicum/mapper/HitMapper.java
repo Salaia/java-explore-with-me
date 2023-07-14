@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.dto.HitDto;
 import ru.practicum.model.Hit;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
@@ -15,8 +16,7 @@ public class HitMapper {
 
         return Hit.builder()
                 .app(hitDto.getApp())
-                .created(hitDto.getTimestamp())
-                //.created(LocalDateTime.parse(endpointHit.getTimestamp(), formatter))
+                .created(LocalDateTime.parse(hitDto.getTimestamp(), formatter))
                 .uri(hitDto.getUri())
                 .ip(hitDto.getIp())
                 .build();

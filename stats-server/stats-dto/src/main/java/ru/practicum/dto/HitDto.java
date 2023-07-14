@@ -1,10 +1,8 @@
 package ru.practicum.dto;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 @Data
 public class HitDto {
@@ -14,6 +12,6 @@ public class HitDto {
     String uri;
     @NotBlank(message = "ip may not be blank.")
     String ip;
-    @DateTimeFormat
-    LocalDateTime timestamp;
+    @NotBlank(message = "timestamp may not be blank.")
+    String timestamp;
 }
