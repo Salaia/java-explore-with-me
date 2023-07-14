@@ -15,7 +15,6 @@ import java.util.List;
 
 
 @Service
-//@Transactional
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StatsServiceImpl implements StatsService {
