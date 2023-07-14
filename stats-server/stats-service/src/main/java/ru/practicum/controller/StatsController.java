@@ -7,16 +7,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.StatsDto;
 import ru.practicum.service.StatsService;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @Slf4j
+@Validated
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StatsController {
@@ -24,7 +27,7 @@ public class StatsController {
     StatsService statsService;
 
     @PostMapping("/hit")
-    public ResponseEntity<String> hit(@RequestBody HitDto hitDto) {
+    public ResponseEntity<String> hit(@Valid @RequestBody HitDto hitDto) {
         log.debug("Got request to save: " + hitDto);
         statsService.hit(hitDto);
         return new ResponseEntity<>("Hit endpoint: " + hitDto.getUri(), HttpStatus.CREATED);
