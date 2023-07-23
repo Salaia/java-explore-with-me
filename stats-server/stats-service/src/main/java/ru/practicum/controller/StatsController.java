@@ -41,7 +41,7 @@ public class StatsController {
     @GetMapping("/stats")
     public List<ViewStats> findStats(@RequestParam(name = "start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
                                      @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
-                                     @RequestParam(name = "unique", defaultValue = "false") Boolean unique,
+                                     @RequestParam(name = "unique", defaultValue = "false") boolean unique,
                                      @RequestParam(name = "uris", required = false) String[] uris
     ) {
         log.debug("Got request to findStats from: " + start + " to " + end + "; unique: " + unique + "; on uris: " + uris);

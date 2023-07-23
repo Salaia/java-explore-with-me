@@ -26,7 +26,7 @@ public class StatsServiceImpl implements StatsService {
     }
 
     @Override
-    public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, Boolean unique, String[] uris) {
+    public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, boolean unique, String[] uris) {
         List<ViewStats> viewStatsList;
         if (start.isAfter(end)) {
             throw new BadRequestException("Неверные датами начала и конца диапазона");

@@ -9,5 +9,5 @@ import java.util.List;
 public interface StatsService {
     EndpointHit create(EndpointHit endpointHit);
 
-    List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, Boolean unique, String[] uris);
+    List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, boolean unique, String[] uris);
 }
