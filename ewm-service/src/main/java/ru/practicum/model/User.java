@@ -6,24 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "hits")
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Hit {
+@NoArgsConstructor
+@Entity
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hit_id")
+    @Column(name = "user_id")
     private Long id;
-    private String app;
-    private String uri;
-    private String ip;
-    private LocalDateTime created;
 
+    private String email;
 
+    @Column(name = "user_name")
+    private String name;
 }
