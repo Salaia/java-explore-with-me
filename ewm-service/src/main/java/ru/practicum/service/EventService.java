@@ -85,7 +85,6 @@ public class EventService {
         return EventMapper.toEventFullDto(event);
     }
 
-
     public EventFullDto updateEvent(Long userId, Long eventId, UpdateEventUserRequest eventUserRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
@@ -142,7 +141,6 @@ public class EventService {
         return eventList.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
-
     public EventFullDto updateEventAndStatus(Long eventId, UpdateEventAdminRequest adminRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
@@ -163,7 +161,6 @@ public class EventService {
             throw new ConflictException("Событие можно публиковать, только если оно в состоянии ожидания публикации, текущее состояние: " + event.getState());
         }
 
-
         BeanUtils.copyProperties(adminRequest, event, getNullPropertyNames(adminRequest));
 
         if (adminRequest.getStateAction() == StateAction.PUBLISH_EVENT) {
@@ -175,19 +172,6 @@ public class EventService {
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
     }
-
-
-    /**
-     * Метод, getNullPropertyNames, который возвращает имена свойств, значение которых в объекте равно null. Это достигается с помощью:
-     * Получения всех свойств объекта с помощью BeanUtils.getPropertyDescriptors
-     * Использования Stream API для обработки свойств
-     * Использования ReflectionUtils.findMethod и ReflectionUtils.invokeMethod для проверки, равно ли значение свойства null
-     * Конвертирования Stream подходящих свойств в массив строк
-     * Затем передается этот массив как третий аргумент в copyProperties.
-     * Это аргумент varargs, который позволяет задать 'имена свойств, которые должны быть игнорированы'. Таким образом, все свойства с именами,
-     * которые возвращает getNullPropertyNames, не будут скопированы в целевой бин.
-     */
-
 
     private static String[] getNullPropertyNames(Object source) {
 
@@ -292,7 +276,6 @@ public class EventService {
 
     private Integer getCountUniqueViews(HttpServletRequest request) {
         String[] uris = new String[]{request.getRequestURI()};
-
 
         List<ViewStats> response = statsClient.getStats(
                 LocalDateTime.now().minusYears(100).format(formatter),

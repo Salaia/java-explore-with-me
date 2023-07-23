@@ -9,7 +9,7 @@ services:
     depends_on:
       - stats-db
     environment:
-      - EWM_MAIN_URL=http://main:8080
+      - EWM_SERVICE_URL=http://ewm-service:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
 
   stats-db:
@@ -33,7 +33,7 @@ services:
     depends_on:
       - ewm-db
     environment:
-      - EWM_MAIN_URL=http://main:8080
+      - STATISTIC_SERVICE_URL=http://stat-server:8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-main
 
   ewm-db:
