@@ -27,10 +27,15 @@ public class StatsController {
     StatsService statsService;
 
     @PostMapping("/hit")
-    public ResponseEntity<String> hit(@Valid @RequestBody EndpointHit endpointHit) {
+    /*public ResponseEntity<String> hit(@Valid @RequestBody EndpointHit endpointHit) {
         log.debug("Got request to save: " + endpointHit);
         statsService.create(endpointHit);
         return new ResponseEntity<>("Hit endpoint: " + endpointHit.getUri(), HttpStatus.CREATED);
+    }*/
+    @ResponseStatus(HttpStatus.CREATED)
+    public EndpointHit createInfo(@RequestBody @Valid EndpointHit endpointHit) {
+        log.info("Получен запрос к эндпоинту \"/hits\" create");
+        return statsService.create(endpointHit);
     }
 
 

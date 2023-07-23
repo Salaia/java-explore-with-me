@@ -42,5 +42,4 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h) DESC")
     List<ViewStats> findViewStatsWithoutUris(LocalDateTime start, LocalDateTime end, Pageable pageable);
-
 }
