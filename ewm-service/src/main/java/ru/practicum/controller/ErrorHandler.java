@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.enums.StatusHTTP;
 import ru.practicum.exception.*;
 
 import java.time.LocalDateTime;
@@ -27,7 +26,7 @@ public class ErrorHandler {
     public ApiError badRequestException(final BadRequestException e) {
         log.warn("BadRequestException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST)
                 .reason("Incorrect request.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -39,7 +38,7 @@ public class ErrorHandler {
     public ApiError conflictRequestException(final ConflictException e) {
         log.warn("BadRequestException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.CONFLICT)
+                .status(HttpStatus.CONFLICT)
                 .reason("Conflict in incoming data.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -51,7 +50,7 @@ public class ErrorHandler {
     public ApiError handleSqlException(final DataIntegrityViolationException e) {
         log.warn("DataIntegrityViolationException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.CONFLICT)
+                .status(HttpStatus.CONFLICT)
                 .reason("DataIntegrityViolationException.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -63,7 +62,7 @@ public class ErrorHandler {
     public ApiError handleJsonParseException(final HttpMessageNotReadableException e) {
         log.warn("HttpMessageNotReadableException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST)
                 .reason("Incorrect JSON query.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -82,7 +81,7 @@ public class ErrorHandler {
                 .collect(Collectors.joining(", "));
 
         return ApiError.builder()
-                .status(StatusHTTP.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST)
                 .reason("MethodArgumentNotValidException.")
                 .message(errors)
                 .timestamp(LocalDateTime.now())
@@ -109,7 +108,7 @@ public class ErrorHandler {
         }
         errorMessage = e.getMessage();
         return ApiError.builder()
-                .status(StatusHTTP.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST)
                 .reason(exceptionType)
                 .message(errorMessage)
                 .timestamp(LocalDateTime.now())
@@ -121,7 +120,7 @@ public class ErrorHandler {
     public ApiError validationIdException(final ValidationIdException e) {
         log.warn("ValidationIdException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND)
                 .reason("The required object was not found")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())
@@ -133,7 +132,7 @@ public class ErrorHandler {
     public ApiError forbiddenException(final ForbiddenException e) {
         log.warn("ForbiddenException: " + e.getMessage());
         return ApiError.builder()
-                .status(StatusHTTP.FORBIDDEN)
+                .status(HttpStatus.FORBIDDEN)
                 .reason("Operation was forbidden.")
                 .message(e.getMessage())
                 .timestamp(LocalDateTime.now())

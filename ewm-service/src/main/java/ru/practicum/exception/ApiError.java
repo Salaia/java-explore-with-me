@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.enums.StatusHTTP;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ApiError {
     private String message;
     private String reason;
-    private StatusHTTP status;
+    private HttpStatus status;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }
