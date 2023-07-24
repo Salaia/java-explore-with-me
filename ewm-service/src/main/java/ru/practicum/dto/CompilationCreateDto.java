@@ -1,9 +1,7 @@
 package ru.practicum.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,11 +11,13 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationCreateDto {
 
-    private Set<Long> events;
-    private Boolean pinned = false;
+    Set<Long> events;
+    Boolean pinned = false;
+
     @Size(max = 50, message = "Title may not be longer then 50 characters.")
     @NotBlank(message = "Title may not be blank.")
-    private String title;
+    String title;
 }

@@ -1,9 +1,7 @@
 package ru.practicum.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -11,13 +9,12 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationDto {
 
-    private List<EventShortDto> events;
-    private Long id;
-
-    private Boolean pinned;
-
-    private String title;
+    List<EventShortDto> events;
+    Long id;
+    Boolean pinned;
+    String title;
 
 }

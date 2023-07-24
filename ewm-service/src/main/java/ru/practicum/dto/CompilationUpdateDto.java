@@ -1,28 +1,26 @@
 package ru.practicum.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationUpdateDto {
 
-    /**
-     * Список id событий подборки для полной замены текущего списка
-     */
-    private Set<Long> events;
+     Set<Long> events;
 
-    private Boolean pinned;
+     Boolean pinned;
 
-    @Length(min = 1, max = 50, message = "Заголовок подборки не должен быть пустым и более 50 символов")
-    private String title;
+    @Size(max = 50, message = "Title may not be longer then 50 characters.")
+    @NotBlank(message = "Title may not be blank.")
+    String title;
 
 }
