@@ -4,7 +4,6 @@ package ru.practicum.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -15,12 +14,10 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationUpdateDto {
 
-     Set<Long> events;
+    Set<Long> events;
+    Boolean pinned;
 
-     Boolean pinned;
-
-    @Size(max = 50, message = "Title may not be longer then 50 characters.")
-    @NotBlank(message = "Title may not be blank.")
+    @Size(min = 1, max = 50, message = "Title must be from 1 to 50 characters long.")
     String title;
 
 }

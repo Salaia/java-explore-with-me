@@ -1,10 +1,8 @@
 package ru.practicum.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.enums.StateAction;
 import ru.practicum.model.Location;
 
@@ -15,29 +13,26 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventUpdateAdminDto {
-    @Size(min = 20, max = 2000, message = "Короткое описание должно быть минимум 20 символов и не более не более 2000 символов")
-    private String annotation;
+    @Size(min = 20, max = 2000, message = "Annotation must be from 20 to 2000 characters long.")
+    String annotation;
 
-    private Integer category;
+    Integer category;
 
-    @Size(min = 20, max = 7000, message = "Описание должно быть минимум 20 символов и не более не более 7000 символов")
-    private String description;
+    @Size(min = 20, max = 7000, message = "Description must be from 20 to 7000 characters long.")
+    String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime eventDate;
+    LocalDateTime eventDate;
 
-    private Location location;
+    Location location;
+    Boolean paid;
+    Integer participantLimit;
+    Boolean requestModeration;
+    StateAction stateAction;
 
-    private Boolean paid;
-
-    private Integer participantLimit;
-
-    private Boolean requestModeration;
-
-    private StateAction stateAction;
-
-    @Size(min = 3, max = 120, message = "Новый заголовок должен быть минимум 3 символа и не более 120 символов")
-    private String title;
+    @Size(min = 3, max = 120, message = "Title must be from 3 to 120 characters long.")
+    String title;
 }
 
