@@ -3,7 +3,7 @@ package ru.practicum.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.dto.NewUserRequest;
+import ru.practicum.dto.UserCreateDto;
 import ru.practicum.dto.UserDto;
 import ru.practicum.exception.ValidationIdException;
 import ru.practicum.mapper.UserMapper;
@@ -20,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserDto createUser(NewUserRequest userRequest) {
+    public UserDto createUser(UserCreateDto userRequest) {
         User user = UserMapper.toUser(userRequest);
         User saveUser = userRepository.save(user);
         return UserMapper.toUserDto(saveUser);

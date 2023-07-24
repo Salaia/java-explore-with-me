@@ -14,6 +14,7 @@ import ru.practicum.service.StatsService;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -26,17 +27,11 @@ public class StatsController {
     StatsService statsService;
 
     @PostMapping("/hit")
-    /*public ResponseEntity<String> hit(@Valid @RequestBody EndpointHit endpointHit) {
-        log.debug("Got request to save: " + endpointHit);
-        statsService.create(endpointHit);
-        return new ResponseEntity<>("Hit endpoint: " + endpointHit.getUri(), HttpStatus.CREATED);
-    }*/
     @ResponseStatus(HttpStatus.CREATED)
     public EndpointHit createInfo(@RequestBody @Valid EndpointHit endpointHit) {
-        log.info("Получен запрос к эндпоинту \"/hits\" create");
+        log.info("Requested endpoint: /hit \ndto: " + endpointHit);
         return statsService.create(endpointHit);
     }
-
 
     @GetMapping("/stats")
     public List<ViewStats> findStats(@RequestParam(name = "start") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
@@ -44,7 +39,7 @@ public class StatsController {
                                      @RequestParam(name = "unique", defaultValue = "false") boolean unique,
                                      @RequestParam(name = "uris", required = false) String[] uris
     ) {
-        log.debug("Got request to findStats from: " + start + " to " + end + "; unique: " + unique + "; on uris: " + uris);
+        log.debug("Got request to findStats from: " + start + " to " + end + "; unique: " + unique + "; on uris: " + Arrays.toString(uris));
         return statsService.getStats(start, end, unique, uris);
     }
 

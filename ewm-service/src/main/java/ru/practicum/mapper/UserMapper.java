@@ -1,7 +1,7 @@
 package ru.practicum.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.dto.NewUserRequest;
+import ru.practicum.dto.UserCreateDto;
 import ru.practicum.dto.UserDto;
 import ru.practicum.model.User;
 
@@ -15,7 +15,7 @@ public class UserMapper {
                 .build();
     }
 
-    public User toUser(NewUserRequest userRequest) {
+    public User toUser(UserCreateDto userRequest) {
         return User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())

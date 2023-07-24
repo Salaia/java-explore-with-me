@@ -29,9 +29,8 @@ public class StatsServiceImpl implements StatsService {
     public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, boolean unique, String[] uris) {
         List<ViewStats> viewStatsList;
         if (start.isAfter(end)) {
-            throw new BadRequestException("Неверные датами начала и конца диапазона");
+            throw new BadRequestException("Start of period may not be before it's end.");
         }
-
 
         if (uris == null || uris.length == 0) {
             if (unique) {

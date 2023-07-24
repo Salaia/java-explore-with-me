@@ -24,26 +24,27 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public List<EventShortDto> getEvents(@RequestParam(name = "text", required = false) String text,
-                                         @RequestParam(name = "categories", required = false) List<Long> categories,
-                                         @RequestParam(name = "paid", required = false) Boolean paid,
-                                         @RequestParam(name = "rangeStart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
-                                         @RequestParam(name = "rangeEnd", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
-                                         @RequestParam(name = "onlyAvailable", required = false) Boolean onlyAvailable,
-                                         @RequestParam(name = "sort", defaultValue = "EVENT_DATE") StateSort sort,
-                                         @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
-                                         @RequestParam(name = "size", defaultValue = "10") @Positive Integer size,
-                                         HttpServletRequest request) {
-        log.info("Получен запрос к эндпоинту: /events getEvents");
-        System.out.println(request.getRequestURI());
-        System.out.println(request.getRemoteAddr());
+    public List<EventShortDto> getEvents(
+            @RequestParam(required = false) String text,
+            @RequestParam(required = false) List<Long> categories,
+            @RequestParam(required = false) Boolean paid,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
+            @RequestParam(required = false) Boolean onlyAvailable,
+            @RequestParam(defaultValue = "EVENT_DATE") StateSort sort,
+            @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+            @RequestParam(defaultValue = "10") @Positive Integer size,
+            HttpServletRequest request) {
+        log.info("Requested endpoint: /events getEvents, text: " + text + ", categories: " + categories +
+                ", paid: " + paid + ", rangeStart: " + rangeStart + ", rangeEnd: " + rangeEnd +
+                ", onlyAvailable: " + onlyAvailable + ", sort: " + sort + ", from: " + from + ", size: " + size + ", dto: " + request);
         return eventService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }
 
     @GetMapping("/{eventId}")
     public EventFullDto getEventsById(@PathVariable @Positive Long eventId,
                                       HttpServletRequest request) {
-        log.info("Получен запрос к эндпоинту: /events/{eventId} getEventsById c Id={}", eventId);
+        log.info("Requested endpoint: /events/{eventId} getEventsById c Id = " + eventId + ", dto: " + request);
         return eventService.getEventsById(eventId, request);
     }
 }

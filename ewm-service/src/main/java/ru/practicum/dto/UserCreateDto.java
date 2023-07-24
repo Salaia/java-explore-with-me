@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewUserRequest {
+public class UserCreateDto {
 
     @Size(min = 2, max = 250, message = "Имя должно быть минимум 2 символа и не более 250 символов")
     @NotBlank(message = "Имя не может быть пустым")

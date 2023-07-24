@@ -1,29 +1,29 @@
 package ru.practicum.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "hits")
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Hit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hit_id")
-    private Long id;
-    private String app;
-    private String uri;
-    private String ip;
-    private LocalDateTime created;
-
+    Long id;
+    String app;
+    String uri;
+    String ip;
+    LocalDateTime created;
 
 }

@@ -21,16 +21,16 @@ public class CompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public List<CompilationDto> get(@RequestParam(name = "pinned", required = false) Boolean pinned,
-                                    @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
-                                    @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
-        log.info("Получен запрос к эндпоинту: /compilations/get get");
+    public List<CompilationDto> get(@RequestParam(required = false) Boolean pinned,
+                                    @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                    @RequestParam(defaultValue = "10") @Positive Integer size) {
+        log.info("Requested endpoint: /compilations/get get, pinned: " + pinned + ", from: " + from + ", size: " + size);
         return compilationService.get(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
     public CompilationDto getById(@PathVariable @Positive Long compId) {
-        log.info("Получен запрос к эндпоинту: /compilations/{compId} compId={}", compId);
+        log.info("Requested endpoint: /compilations/{compId} compId = " + compId);
         return compilationService.getById(compId);
     }
 

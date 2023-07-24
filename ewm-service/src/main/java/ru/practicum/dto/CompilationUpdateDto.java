@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateCompilationRequest {
+public class CompilationUpdateDto {
 
     /**
      * Список id событий подборки для полной замены текущего списка

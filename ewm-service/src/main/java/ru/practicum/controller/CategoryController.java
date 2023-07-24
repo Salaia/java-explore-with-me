@@ -19,15 +19,15 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryDto> get(@RequestParam(name = "from", defaultValue = "0") @PositiveOrZero Integer from,
-                                 @RequestParam(name = "size", defaultValue = "10") @Positive Integer size) {
-        log.info("Получен запрос к эндпоинту: /categories get");
+    public List<CategoryDto> get(@RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                 @RequestParam(defaultValue = "10") @Positive Integer size) {
+        log.info("Requested endpoint: /categories get, from: " + from + ", size: " + size);
         return categoryService.get(from, size);
     }
 
     @GetMapping("/{catId}")
     public CategoryDto getById(@PathVariable @Positive Long catId) {
-        log.info("Получен запрос к эндпоинту: /categories/{catId} getById c ID = {}", catId);
+        log.info("Requested endpoint: /categories/{catId} getById c ID = " + catId);
         return categoryService.getById(catId);
     }
 }

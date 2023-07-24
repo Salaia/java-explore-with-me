@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface StatsRepository extends JpaRepository<Hit, Long> {
 
-
     @Query("SELECT new ru.practicum.dto.ViewStats(h.app, h.uri, COUNT(h)) " +
             "FROM Hit h " +
             "WHERE h.created BETWEEN ?1 AND ?2 AND h.uri IN (?3) " +
@@ -34,7 +33,6 @@ public interface StatsRepository extends JpaRepository<Hit, Long> {
             "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(DISTINCT h.ip) DESC")
     List<ViewStats> findViewStatsWithoutUrisUnique(LocalDateTime start, LocalDateTime end, Pageable pageable);
-
 
     @Query("SELECT new ru.practicum.dto.ViewStats(h.app, h.uri, COUNT(h)) " +
             "FROM Hit h " +

@@ -5,8 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.CompilationDto;
 import ru.practicum.dto.EventShortDto;
-import ru.practicum.dto.NewCompilationDto;
-import ru.practicum.dto.UpdateCompilationRequest;
+import ru.practicum.dto.CompilationCreateDto;
+import ru.practicum.dto.CompilationUpdateDto;
 import ru.practicum.exception.ValidationIdException;
 import ru.practicum.mapper.CompilationMapper;
 import ru.practicum.mapper.EventMapper;
@@ -27,7 +27,7 @@ public class CompilationService {
     private final EventRepository eventRepository;
     private final CompilationRepository compilationRepository;
 
-    public CompilationDto create(NewCompilationDto compilationDto) {
+    public CompilationDto create(CompilationCreateDto compilationDto) {
 
         List<Event> eventList = eventRepository.findAllByIdIn(compilationDto.getEvents() == null ? new HashSet<>() : compilationDto.getEvents());
         Compilation compilation = CompilationMapper.toCompilation(compilationDto, eventList);
@@ -44,18 +44,18 @@ public class CompilationService {
         compilationRepository.delete(compilation);
     }
 
-    public CompilationDto update(Long compId, UpdateCompilationRequest updateCompilationRequest) {
+    public CompilationDto update(Long compId, CompilationUpdateDto compilationUpdateDto) {
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new ValidationIdException("Compilation with id=" + compId + " was not found"));
 
-        if (updateCompilationRequest.getTitle() != null) {
-            compilation.setTitle(updateCompilationRequest.getTitle());
+        if (compilationUpdateDto.getTitle() != null) {
+            compilation.setTitle(compilationUpdateDto.getTitle());
         }
-        if (updateCompilationRequest.getTitle() != null) {
-            compilation.setTitle(updateCompilationRequest.getTitle());
+        if (compilationUpdateDto.getTitle() != null) {
+            compilation.setTitle(compilationUpdateDto.getTitle());
         }
-        if (updateCompilationRequest.getEvents() != null) {
-            List<Event> eventList = eventRepository.findAllByIdIn(updateCompilationRequest.getEvents());
+        if (compilationUpdateDto.getEvents() != null) {
+            List<Event> eventList = eventRepository.findAllByIdIn(compilationUpdateDto.getEvents());
             compilation.setEvents(eventList);
         }
         Compilation updateCompilation = compilationRepository.save(compilation);

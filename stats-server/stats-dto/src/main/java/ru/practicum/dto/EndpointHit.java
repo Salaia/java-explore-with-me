@@ -1,16 +1,17 @@
 package ru.practicum.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+// Переименовала эти дто: во всех обсуждениях в Пачке их называют именно так,
+// потому что их так ментор называет в вебинаре
 public class EndpointHit {
     private Long id;
 

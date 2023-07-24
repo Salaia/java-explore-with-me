@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateEventUserRequest {
+public class EventUpdateUserDto {
 
     @Size(min = 20, max = 2000, message = "Короткое описание должно быть минимум 20 символов и не более не более 2000 символов")
     private String annotation;

@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import ru.practicum.dto.EndpointHit;
 import ru.practicum.dto.ViewStats;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ public class StatsClient {
 
     private static final String API_PREFIX_HIT = "/hit";
     private static final String API_PREFIX_STATS = "/stats";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final RestTemplate rest;
     private final String serverUrl;
 
@@ -27,7 +25,6 @@ public class StatsClient {
         this.rest = new RestTemplate();
         this.serverUrl = serverUrl;
     }
-
 
     public List<ViewStats> getStats(String start,
                                     String end,
@@ -42,11 +39,9 @@ public class StatsClient {
         );
         String path = serverUrl + API_PREFIX_STATS + "?start={start}&end={end}&uris={uris}&unique={unique}";
 
-
         ResponseEntity<List<ViewStats>> serverResponse = rest.exchange(path, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
         }, parameters);
-        List<ViewStats> viewStatsList = serverResponse.getBody();
-        return viewStatsList;
+        return serverResponse.getBody();
     }
 
     public void createInfo(EndpointHit endpointHit) {
