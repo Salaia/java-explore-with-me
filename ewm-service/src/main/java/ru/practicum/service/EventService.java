@@ -24,7 +24,6 @@ import ru.practicum.model.Event;
 import ru.practicum.model.User;
 import ru.practicum.repository.CategoryRepository;
 import ru.practicum.repository.EventRepository;
-import ru.practicum.repository.LocationRepository;
 
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
