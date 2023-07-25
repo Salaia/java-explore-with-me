@@ -10,7 +10,6 @@ import ru.practicum.mapper.UserMapper;
 import ru.practicum.model.User;
 import ru.practicum.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsers(List<Long> ids, Integer from, Integer size) {
-        List<User> userList = new ArrayList<>();
+        List<User> userList;
 
         if (ids == null || ids.isEmpty()) {
             userList = userRepository.findAll(PageRequest.of(from, size)).getContent();
@@ -44,7 +43,7 @@ public class UserService {
     }
 
     public User checkUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new ValidationIdException("Пользователь с id=" + userId + ", не найден"));
+        return userRepository.findById(userId).orElseThrow(() -> new ValidationIdException("Not found: user id = " + userId));
     }
 }
 
