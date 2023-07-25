@@ -13,7 +13,6 @@ import ru.practicum.exception.ValidationIdException;
 import ru.practicum.mapper.RequestMapper;
 import ru.practicum.model.Event;
 import ru.practicum.model.Request;
-import ru.practicum.model.User;
 import ru.practicum.repository.EventRepository;
 import ru.practicum.repository.RequestRepository;
 
@@ -33,18 +32,18 @@ public class RequestService {
 
     public ParticipationRequestDto addRequest(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ValidationIdException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new ValidationIdException("Event with id = " + eventId + " was not found."));
 
         if (event.getState() != StatusParticipation.PUBLISHED) {
-            throw new ConflictException("Нельзя участвовать в неопубликованном событии");
+            throw new ConflictException("Participation is only allowed in events at state PUBLISHED. Current state: " + event.getState());
         }
 
         if (Objects.equals(event.getInitiator().getId(), userId)) {
-            throw new ConflictException("Инициатор события не может добавить запрос на участие в своём событии");
+            throw new ConflictException("Event initiator cannot be sign in for participation.");
         }
 
         if (event.getConfirmedRequests() >= event.getParticipantLimit() && event.getParticipantLimit() != 0) {
-            throw new ConflictException("Достигнут лимит запросов на участие");
+            throw new ConflictException("Event has reached it's participation limit: " + event.getParticipantLimit());
         }
 
         Request request = RequestMapper.toRequest(userId, eventId);
@@ -62,7 +61,7 @@ public class RequestService {
     }
 
     public List<ParticipationRequestDto> getRequest(Long userId) {
-        User user = userService.checkUser(userId);
+        userService.checkUser(userId);
         List<Request> requestList = requestRepository.findAllByRequester(userId);
         return requestList.stream().map(RequestMapper::toParticipationRequestDto).collect(Collectors.toList());
     }
@@ -71,7 +70,7 @@ public class RequestService {
         Request request = requestRepository.findByIdAndRequester(requestId, userId);
 
         if (request == null) {
-            throw new ValidationIdException("Request with id=" + requestId + " was not found");
+            throw new ValidationIdException("Request with id = " + requestId + " was not found.");
         }
         request.setStatus(StatusEventRequest.CANCELED);
         Request updateRequest = requestRepository.save(request);
@@ -83,7 +82,7 @@ public class RequestService {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId);
 
         if (event == null) {
-            throw new ValidationIdException("Event with id=" + eventId + " was not found");
+            throw new ValidationIdException("Event with id = " + eventId + " was not found.");
         }
 
         List<Request> requestList = requestRepository.findAllByEvent(eventId);
@@ -94,7 +93,7 @@ public class RequestService {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId);
 
         if (event == null) {
-            throw new ValidationIdException("Event with id=" + eventId + " was not found");
+            throw new ValidationIdException("Event with id = " + eventId + " was not found.");
         }
 
         Set<Long> requestIds = statusUpdateRequest.getRequestIds();
@@ -109,7 +108,7 @@ public class RequestService {
         }
 
         if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
-            throw new ConflictException("Количество участников ограничено");
+            throw new ConflictException("Event has reached it's participation limit: " + event.getParticipantLimit());
         }
 
 
@@ -124,7 +123,7 @@ public class RequestService {
             }
 
             if (!request.getStatus().equals(StatusEventRequest.PENDING)) {
-                throw new ConflictException("Статус можно изменить только у заявок, находящихся в состоянии ожидания");
+                throw new ConflictException("Only requests at PENDING status may have their status changed. Current state: " + request.getStatus());
             }
 
             if (statusUpdateRequest.getStatus() == StatusEventRequest.CONFIRMED) {
