@@ -5,14 +5,13 @@ import ru.practicum.dto.*;
 import ru.practicum.enums.StatusParticipation;
 import ru.practicum.model.Category;
 import ru.practicum.model.Event;
-import ru.practicum.model.Location;
 import ru.practicum.model.User;
 
 import java.time.LocalDateTime;
 
 @UtilityClass
 public class EventMapper {
-    public static Event toEvent(EventCreateDto eventCreateDto, Category category, Location location, User initiator, LocalDateTime created) {
+    public static Event toEvent(EventCreateDto eventCreateDto, Category category, User initiator, LocalDateTime created) {
         return Event.builder()
                 .annotation(eventCreateDto.getAnnotation())
                 .category(category)
@@ -53,9 +52,6 @@ public class EventMapper {
                 .build();
     }
 
-    public static void toEventDto() {
-    }
-
     public static EventFullDto toEventFullDto(Event event) {
         return EventFullDto.builder()
                 .id(event.getId())
@@ -83,35 +79,6 @@ public class EventMapper {
                 .state(event.getState())
                 .title(event.getTitle())
                 .views(event.getViews())
-                .build();
-    }
-
-    public static Event toEventFromFullDto(EventFullDto eventFullDto) {
-        return Event.builder()
-                .annotation(eventFullDto.getAnnotation())
-                .category(Category.builder()
-                        .id(eventFullDto.getCategory().getId())
-                        .name(eventFullDto.getCategory().getName())
-                        .build())
-                .confirmedRequests(eventFullDto.getConfirmedRequests())
-                .createdOn(eventFullDto.getCreatedOn())
-                .description(eventFullDto.getDescription())
-                .eventDate(eventFullDto.getEventDate())
-                .initiator(User.builder()
-                        .id(eventFullDto.getInitiator().getId())
-                        .name(eventFullDto.getInitiator().getName())
-                        .build())
-                .location(Location.builder()
-                        .lat(eventFullDto.getLocation().getLat())
-                        .lon(eventFullDto.getLocation().getLon())
-                        .build())
-                .paid(eventFullDto.getPaid())
-                .participantLimit(eventFullDto.getParticipantLimit())
-                .requestModeration(eventFullDto.getRequestModeration())
-                .title(eventFullDto.getTitle())
-                .state(StatusParticipation.PENDING)
-                .publishedOn(LocalDateTime.now())
-                .views(0)
                 .build();
     }
 }

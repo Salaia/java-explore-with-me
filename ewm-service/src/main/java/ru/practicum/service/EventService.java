@@ -21,7 +21,6 @@ import ru.practicum.exception.ValidationIdException;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.model.Category;
 import ru.practicum.model.Event;
-import ru.practicum.model.Location;
 import ru.practicum.model.User;
 import ru.practicum.repository.CategoryRepository;
 import ru.practicum.repository.EventRepository;
@@ -46,9 +45,10 @@ public class EventService {
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final UserService userService;
-    private final LocationRepository locationRepository;
     private final StatsClient statsClient;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final int MIN_HOURS_BEFORE_EVENT_CREATE = 2;
+    private static final int MIN_HOURS_BEFORE_EVENT_UPDATE = 1;
 
     public Event findEventByCategoryId(Long catId) {
         return eventRepository.findTopByCategoryId(catId);
@@ -63,17 +63,16 @@ public class EventService {
         LocalDateTime created = LocalDateTime.now();
         long hoursDifference = ChronoUnit.HOURS.between(created, eventDto.getEventDate());
 
-        if (hoursDifference < 2) {
-            throw new BadRequestException("Должно содержать дату, которая еще не наступила");
+        if (hoursDifference < MIN_HOURS_BEFORE_EVENT_CREATE) {
+            throw new BadRequestException("Event must be at least 2 hours ahead.");
         }
 
         Category category = categoryRepository.findById(eventDto.getCategory())
-                .orElseThrow(() -> new ValidationIdException("Категория с id=" + eventDto.getCategory() + ", не найдена"));
+                .orElseThrow(() -> new ValidationIdException("Not found: category id = " + eventDto.getCategory()));
 
         User initiator = userService.checkUser(userId);
-        Location location = locationRepository.save(eventDto.getLocation());
 
-        Event event = EventMapper.toEvent(eventDto, category, location, initiator, created);
+        Event event = EventMapper.toEvent(eventDto, category, initiator, created);
         Event newEvent = eventRepository.save(event);
 
         return EventMapper.toEventFullDto(newEvent);
@@ -91,15 +90,15 @@ public class EventService {
         if (eventUserRequest.getEventDate() != null) {
             long hoursDifference = ChronoUnit.HOURS.between(currentTime, eventUserRequest.getEventDate());
 
-            if (hoursDifference < 2) {
-                throw new BadRequestException("Должно содержать дату, которая еще не наступила");
+            if (hoursDifference < MIN_HOURS_BEFORE_EVENT_CREATE) {
+                throw new BadRequestException("Event must be at least 2 hours ahead.");
             }
         }
 
         Event event = checkEvent(eventId, userId);
 
         if (event.getState() == StatusParticipation.PUBLISHED) {
-            throw new ConflictException("Можно изменить только отложенные или отмененные события");
+            throw new ConflictException("Only events at PUBLISHED state can be updated. Current state: " + event.getState());
         }
 
 
@@ -120,21 +119,21 @@ public class EventService {
 
         Pageable pageable = PageRequest.of(from, size);
 
-        Specification<Event> spec = (Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+        Specification<Event> spec = (Root<Event> root, CriteriaQuery<?> query, CriteriaBuilder criteria) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (users != null && !users.isEmpty())
                 predicates.add(root.get("initiator").in(users));
             if (status != null)
-                predicates.add(cb.equal(root.get("state"), status));
+                predicates.add(criteria.equal(root.get("state"), status));
             if (categories != null && !categories.isEmpty())
                 predicates.add(root.join("category", JoinType.INNER).get("id").in(categories));
             if (rangeStart != null)
-                predicates.add(cb.greaterThanOrEqualTo(root.get("eventDate"), rangeStart));
+                predicates.add(criteria.greaterThanOrEqualTo(root.get("eventDate"), rangeStart));
             if (rangeEnd != null)
-                predicates.add(cb.lessThanOrEqualTo(root.get("eventDate"), rangeEnd));
+                predicates.add(criteria.lessThanOrEqualTo(root.get("eventDate"), rangeEnd));
 
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            return criteria.and(predicates.toArray(new Predicate[predicates.size()]));
         };
 
         List<Event> eventList = eventRepository.findAll(spec, pageable).getContent();
@@ -147,18 +146,18 @@ public class EventService {
         if (adminRequest.getEventDate() != null) {
             long hoursDifference = ChronoUnit.HOURS.between(currentTime, adminRequest.getEventDate());
             if (adminRequest.getEventDate().isBefore(currentTime)) {
-                throw new BadRequestException("Дата начала изменяемого события должна быть в будущем");
+                throw new BadRequestException("Event must be in future.");
             }
 
-            if (hoursDifference < 1) {
-                throw new ConflictException("Дата начала изменяемого события должна быть не ранее чем за час от даты публикации");
+            if (hoursDifference < MIN_HOURS_BEFORE_EVENT_UPDATE) {
+                throw new ConflictException("Event must be at least 1 hour ahead.");
             }
         }
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new ValidationIdException("Event with id=" + eventId + " was not found"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new ValidationIdException("Event with id=" + eventId + " was not found."));
 
         if (event.getState() != StatusParticipation.PENDING) {
-            throw new ConflictException("Событие можно публиковать, только если оно в состоянии ожидания публикации, текущее состояние: " + event.getState());
+            throw new ConflictException("Only PENDING events can be updated, current state: " + event.getState());
         }
 
         BeanUtils.copyProperties(adminRequest, event, getNullPropertyNames(adminRequest));
@@ -189,7 +188,7 @@ public class EventService {
     public Event checkEvent(Long eventId, Long userId) {
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId);
         if (event == null) {
-            throw new ValidationIdException("Event with id=" + eventId + " was not found");
+            throw new ValidationIdException("Event with id = " + eventId + " was not found.");
         }
         return event;
     }
@@ -197,7 +196,7 @@ public class EventService {
     public EventFullDto getEventsById(Long eventId, HttpServletRequest request) {
         Event event = eventRepository.findByIdAndState(eventId, StatusParticipation.PUBLISHED);
         if (event == null) {
-            throw new ValidationIdException("Event with id=" + eventId + " was not found");
+            throw new ValidationIdException("Event with id = " + eventId + " was not found.");
         }
 
         Integer oldCountHit = getCountUniqueViews(request);
@@ -231,7 +230,7 @@ public class EventService {
         }
 
         if (rangeStart.isAfter(rangeEnd)) {
-            throw new BadRequestException("Дата начала сортировки должна быть ранне конца сортировки");
+            throw new BadRequestException("Start of event must be before end of sorting range.");
         }
 
         LocalDateTime finalRangeStart = rangeStart;
