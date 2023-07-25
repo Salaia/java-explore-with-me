@@ -30,7 +30,7 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long catId) {
-        Category category = checkCategory(catId);
+        Category category = findCategoryById(catId);
         checkEvent(catId);
         categoryRepository.delete(category);
     }
@@ -41,26 +41,28 @@ public class CategoryService {
     }
 
     public CategoryDto getById(Long catId) {
-        Category category = checkCategory(catId);
+        Category category = findCategoryById(catId);
         return CategoryMapper.toCategoryDto(category);
     }
 
-    public Category checkCategory(Long catId) {
+    public Category findCategoryById(Long catId) {
         return categoryRepository.findById(catId)
-                .orElseThrow(() -> new ValidationIdException("Категория с id=" + catId + ", не найдена"));
+                .orElseThrow(() -> new ValidationIdException("Category id = " + catId + " was not found."));
     }
 
+    public CategoryDto updateCategory(CategoryCreateDto categoryDto, Long catId) {
+        Category category = findCategoryById(catId);
+        category.setName(categoryDto.getName());
+        return CategoryMapper.toCategoryDto(categoryRepository.save(category));
+    }
+
+    // Ищет события по категории, вызывается перед её удалением
     private void checkEvent(Long catId) {
         Event event = eventService.findEventByCategoryId(catId);
         if (event != null) {
-            log.warn("Ошибка Категория с ID = {}, не пустая", catId);
+            log.warn("Warning: category with ID = " + catId + ", is not empty!");
             throw new DataIntegrityViolationException("The category is not empty");
         }
     }
 
-    public CategoryDto updateCategory(CategoryCreateDto categoryDto, Long catId) {
-        Category category = checkCategory(catId);
-        category.setName(categoryDto.getName());
-        return CategoryMapper.toCategoryDto(categoryRepository.save(category));
-    }
 }

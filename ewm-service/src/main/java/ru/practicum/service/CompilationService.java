@@ -15,7 +15,6 @@ import ru.practicum.model.Event;
 import ru.practicum.repository.CompilationRepository;
 import ru.practicum.repository.EventRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +65,7 @@ public class CompilationService {
     }
 
     public List<CompilationDto> get(Boolean pinned, Integer from, Integer size) {
-        List<Compilation> compilations = new ArrayList<>();
+        List<Compilation> compilations;
 
         if (pinned != null) {
             compilations = compilationRepository.findAllByPinned(pinned, PageRequest.of(from, size));
@@ -85,7 +84,7 @@ public class CompilationService {
 
     public CompilationDto getById(Long compId) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new ValidationIdException("Compilation with id=" + compId + " was not found"));
+                .orElseThrow(() -> new ValidationIdException("Compilation with id = " + compId + " was not found."));
         List<EventShortDto> eventShortDtoList = compilation.getEvents()
                 .stream().map(EventMapper::toEventShortDto).collect(Collectors.toList());
         return CompilationMapper.toCompilationDto(compilation, eventShortDtoList);
