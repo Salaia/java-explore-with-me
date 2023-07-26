@@ -50,7 +50,7 @@ public class UserController {
     @PatchMapping("/{userId}/events/{eventId}")
     public EventFullDto updateEvent(@PathVariable @Positive Long userId,
                                     @PathVariable @Positive Long eventId,
-                                    @RequestBody @Validated EventUpdateDto eventUserRequest) {
+                                    @RequestBody @Validated EventUpdateUserDto eventUserRequest) {
         log.info("Requested endpoint: users/{userId}/events/{eventId} updateEvent userId = " + userId + ", eventId = " + eventId);
         return eventService.updateEvent(userId, eventId, eventUserRequest);
     }

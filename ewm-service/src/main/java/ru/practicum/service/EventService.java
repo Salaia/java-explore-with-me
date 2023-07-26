@@ -1,15 +1,12 @@
 package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 import ru.practicum.client.StatsClient;
 import ru.practicum.dto.*;
 import ru.practicum.enums.StateAction;
@@ -28,8 +25,6 @@ import ru.practicum.repository.EventRepository;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -37,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -85,7 +79,7 @@ public class EventService {
         return EventMapper.toEventFullDto(event);
     }
 
-    public EventFullDto updateEvent(Long userId, Long eventId, EventUpdateDto eventUserRequest) {
+    public EventFullDto updateEvent(Long userId, Long eventId, EventUpdateUserDto eventUserRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (eventUserRequest.getEventDate() != null) {
@@ -160,8 +154,6 @@ public class EventService {
             throw new ConflictException("Only PENDING events can be updated, current state: " + event.getState());
         }
 
-        //BeanUtils.copyProperties(adminRequest, event, getNullPropertyNames(adminRequest));
-
         if (adminRequest.getStateAction() == StateAction.PUBLISH_EVENT) {
             event.setState(StatusParticipation.PUBLISHED);
         } else {
@@ -171,19 +163,6 @@ public class EventService {
         applyPatchAdmin(adminRequest, event);
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
-    }
-
-    private static String[] getNullPropertyNames(Object source) {
-
-        PropertyDescriptor[] propertyDescriptors = BeanUtils.getPropertyDescriptors(source.getClass());
-
-        return Stream.of(propertyDescriptors)
-                .map(PropertyDescriptor::getName)
-                .filter(propertyName -> {
-                    Method getter = ReflectionUtils.findMethod(source.getClass(), "get" + StringUtils.capitalize(propertyName));
-                    return getter != null && ReflectionUtils.invokeMethod(getter, source) == null;
-                })
-                .toArray(String[]::new);
     }
 
     public Event checkEvent(Long eventId, Long userId) {
@@ -215,7 +194,6 @@ public class EventService {
             event.setViews(event.getViews() + 1);
             eventRepository.save(event);
         }
-
 
         return EventMapper.toEventFullDto(event);
     }
@@ -285,7 +263,7 @@ public class EventService {
         return response.size();
     }
 
-    private Event applyPatchAdmin(EventUpdateAdminDto dto, Event event) {
+    private void applyPatchAdmin(EventUpdateAdminDto dto, Event event) {
         if (dto.getAnnotation() != null) {
             event.setAnnotation(dto.getAnnotation());
         }
@@ -317,12 +295,9 @@ public class EventService {
         if (dto.getTitle() != null) {
             event.setTitle(dto.getTitle());
         }
-
-
-        return event;
     }
 
-    private Event applyPatch(EventUpdateDto dto, Event event) {
+    private void applyPatch(EventUpdateUserDto dto, Event event) {
         if (dto.getAnnotation() != null) {
             event.setAnnotation(dto.getAnnotation());
         }
@@ -354,7 +329,6 @@ public class EventService {
         if (dto.getTitle() != null) {
             event.setTitle(dto.getTitle());
         }
-        return event;
     }
 
 }

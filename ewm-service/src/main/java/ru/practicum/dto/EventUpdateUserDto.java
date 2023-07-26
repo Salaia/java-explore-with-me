@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EventUpdateDto {
+public class EventUpdateUserDto {
 
     @Size(min = 20, max = 2000, message = "Annotation must be from 20 to 2000 characters long.")
     String annotation;
