@@ -1,4 +1,3 @@
-/*
 package ru.practicum.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -37,4 +36,3 @@ public class EventUpdateAdminDto {
     String title;
 }
 
-*/

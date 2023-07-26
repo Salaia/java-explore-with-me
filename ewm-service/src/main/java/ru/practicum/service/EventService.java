@@ -140,7 +140,7 @@ public class EventService {
         return eventList.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
-    public EventFullDto updateEventAndStatus(Long eventId, EventUpdateDto adminRequest) {
+    public EventFullDto updateEventAndStatus(Long eventId, EventUpdateAdminDto adminRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (adminRequest.getEventDate() != null) {
@@ -168,7 +168,7 @@ public class EventService {
             event.setState(StatusParticipation.CANCELED);
         }
 
-        applyPatch(adminRequest, event);
+        applyPatchAdmin(adminRequest, event);
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
     }
@@ -285,7 +285,7 @@ public class EventService {
         return response.size();
     }
 
-    private Event applyPatchAdmin(EventUpdateDto dto, Event event) {
+    private Event applyPatchAdmin(EventUpdateAdminDto dto, Event event) {
         if (dto.getAnnotation() != null) {
             event.setAnnotation(dto.getAnnotation());
         }
