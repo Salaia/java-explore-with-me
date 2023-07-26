@@ -85,7 +85,7 @@ public class EventService {
         return EventMapper.toEventFullDto(event);
     }
 
-    public EventFullDto updateEvent(Long userId, Long eventId, EventUpdateUserDto eventUserRequest) {
+    public EventFullDto updateEvent(Long userId, Long eventId, EventUpdateDto eventUserRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (eventUserRequest.getEventDate() != null) {
@@ -109,8 +109,7 @@ public class EventService {
             event.setState(StatusParticipation.PENDING);
         }
 
-        //BeanUtils.copyProperties(eventUserRequest, event, getNullPropertyNames(eventUserRequest));
-        applyPatchUser(eventUserRequest, event);
+        applyPatch(eventUserRequest, event);
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
     }
@@ -141,7 +140,7 @@ public class EventService {
         return eventList.stream().map(EventMapper::toEventFullDto).collect(Collectors.toList());
     }
 
-    public EventFullDto updateEventAndStatus(Long eventId, EventUpdateAdminDto adminRequest) {
+    public EventFullDto updateEventAndStatus(Long eventId, EventUpdateDto adminRequest) {
         LocalDateTime currentTime = LocalDateTime.now();
 
         if (adminRequest.getEventDate() != null) {
@@ -161,7 +160,7 @@ public class EventService {
             throw new ConflictException("Only PENDING events can be updated, current state: " + event.getState());
         }
 
-        BeanUtils.copyProperties(adminRequest, event, getNullPropertyNames(adminRequest));
+        //BeanUtils.copyProperties(adminRequest, event, getNullPropertyNames(adminRequest));
 
         if (adminRequest.getStateAction() == StateAction.PUBLISH_EVENT) {
             event.setState(StatusParticipation.PUBLISHED);
@@ -169,6 +168,7 @@ public class EventService {
             event.setState(StatusParticipation.CANCELED);
         }
 
+        applyPatch(adminRequest, event);
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
     }
@@ -285,11 +285,44 @@ public class EventService {
         return response.size();
     }
 
-    private Event applyPatchAdmin(EventUpdateAdminDto dto) {
-        return null;
+    private Event applyPatchAdmin(EventUpdateDto dto, Event event) {
+        if (dto.getAnnotation() != null) {
+            event.setAnnotation(dto.getAnnotation());
+        }
+        if (dto.getCategory() != null) {
+            Optional<Category> optionalCategory = categoryRepository.findById(dto.getCategory());
+            if (optionalCategory.isEmpty()) {
+                throw new EntityNotFoundException("Not found: category id = " + dto.getCategory());
+            }
+            event.setCategory(optionalCategory.get());
+        }
+        if (dto.getDescription() != null) {
+            event.setDescription(dto.getDescription());
+        }
+        if (dto.getEventDate() != null) {
+            event.setEventDate(dto.getEventDate());
+        }
+        if (dto.getLocation() != null) {
+            event.setLocation(dto.getLocation());
+        }
+        if (dto.getPaid() != null) {
+            event.setPaid(dto.getPaid());
+        }
+        if (dto.getParticipantLimit() != null) {
+            event.setParticipantLimit(dto.getParticipantLimit());
+        }
+        if (dto.getRequestModeration() != null) {
+            event.setRequestModeration(dto.getRequestModeration());
+        }
+        if (dto.getTitle() != null) {
+            event.setTitle(dto.getTitle());
+        }
+
+
+        return event;
     }
 
-    private Event applyPatchUser(EventUpdateUserDto dto, Event event) {
+    private Event applyPatch(EventUpdateDto dto, Event event) {
         if (dto.getAnnotation() != null) {
             event.setAnnotation(dto.getAnnotation());
         }

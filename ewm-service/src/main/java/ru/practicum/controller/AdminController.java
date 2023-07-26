@@ -70,7 +70,7 @@ public class AdminController {
 
     @PatchMapping("/events/{eventId}")
     public EventFullDto updateEventAndStatus(@PathVariable @Positive Long eventId,
-                                             @RequestBody @Validated EventUpdateAdminDto adminRequest) {
+                                             @RequestBody @Validated EventUpdateDto adminRequest) {
         log.info("Requested endpoint: admin/events updateEventAndStatus, с id= " + eventId +
                 ", dto for update: " + adminRequest);
         return eventService.updateEventAndStatus(eventId, adminRequest);
