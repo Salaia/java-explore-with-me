@@ -18,7 +18,7 @@ public class EventUpdateAdminDto {
     @Size(min = 20, max = 2000, message = "Annotation must be from 20 to 2000 characters long.")
     String annotation;
 
-    Integer category;
+    Long category;
 
     @Size(min = 20, max = 7000, message = "Description must be from 20 to 7000 characters long.")
     String description;

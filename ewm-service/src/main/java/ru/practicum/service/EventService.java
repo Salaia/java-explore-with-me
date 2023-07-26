@@ -25,6 +25,7 @@ import ru.practicum.model.User;
 import ru.practicum.repository.CategoryRepository;
 import ru.practicum.repository.EventRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.PropertyDescriptor;
@@ -34,6 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,8 +109,8 @@ public class EventService {
             event.setState(StatusParticipation.PENDING);
         }
 
-
-        BeanUtils.copyProperties(eventUserRequest, event, getNullPropertyNames(eventUserRequest));
+        //BeanUtils.copyProperties(eventUserRequest, event, getNullPropertyNames(eventUserRequest));
+        applyPatchUser(eventUserRequest, event);
         Event updateEvent = eventRepository.save(event);
         return EventMapper.toEventFullDto(updateEvent);
     }
@@ -282,5 +284,45 @@ public class EventService {
                 uris);
         return response.size();
     }
+
+    private Event applyPatchAdmin(EventUpdateAdminDto dto) {
+        return null;
+    }
+
+    private Event applyPatchUser(EventUpdateUserDto dto, Event event) {
+        if (dto.getAnnotation() != null) {
+            event.setAnnotation(dto.getAnnotation());
+        }
+        if (dto.getCategory() != null) {
+            Optional<Category> optionalCategory = categoryRepository.findById(dto.getCategory());
+            if (optionalCategory.isEmpty()) {
+                throw new EntityNotFoundException("Not found: category id = " + dto.getCategory());
+            }
+            event.setCategory(optionalCategory.get());
+        }
+        if (dto.getDescription() != null) {
+            event.setDescription(dto.getDescription());
+        }
+        if (dto.getEventDate() != null) {
+            event.setEventDate(dto.getEventDate());
+        }
+        if (dto.getLocation() != null) {
+            event.setLocation(dto.getLocation());
+        }
+        if (dto.getPaid() != null) {
+            event.setPaid(dto.getPaid());
+        }
+        if (dto.getParticipantLimit() != null) {
+            event.setParticipantLimit(dto.getParticipantLimit());
+        }
+        if (dto.getRequestModeration() != null) {
+            event.setRequestModeration(dto.getRequestModeration());
+        }
+        if (dto.getTitle() != null) {
+            event.setTitle(dto.getTitle());
+        }
+        return event;
+    }
+
 }
 
