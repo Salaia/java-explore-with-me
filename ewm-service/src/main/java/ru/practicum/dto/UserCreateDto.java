@@ -20,7 +20,7 @@ public class UserCreateDto {
     private String name;
 
     @Email(message = "Incorrect email pattern.")
-    @Size(min = 6, max = 320, message = "Email must be from 6 to 320 characters long.")
+    @Size(min = 6, max = 254, message = "Email must be from 6 to 254 characters long.")
     @NotBlank(message = "Email may not be blank.")
     private String email;
 
