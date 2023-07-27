@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class StatsDto {
-    String app;
-    String uri;
-    Long hits;
+@NoArgsConstructor
+public class CategoryDto {
+
+    private Long id;
+    private String name;
 }

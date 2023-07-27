@@ -1,46 +1,48 @@
 package ru.practicum.service;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.practicum.dto.HitDto;
-import ru.practicum.dto.StatsDto;
+import ru.practicum.dto.EndpointHit;
+import ru.practicum.dto.ViewStats;
+import ru.practicum.exceptions.BadRequestException;
 import ru.practicum.mapper.HitMapper;
+import ru.practicum.model.Hit;
 import ru.practicum.repository.StatsRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StatsServiceImpl implements StatsService {
 
-    StatsRepository statsRepository;
+    private final StatsRepository statRepository;
 
     @Override
-    public void hit(HitDto hitDto) {
-        statsRepository.save(HitMapper.toHit(hitDto));
+    public EndpointHit create(EndpointHit endpointHit) {
+        Hit hit = statRepository.save(HitMapper.toHit(endpointHit));
+        return HitMapper.toHitDto(hit);
     }
 
     @Override
-    public List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, Boolean unique, List<String> uris) {
-        List<StatsDto> viewStatsList;
+    public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, boolean unique, String[] uris) {
+        List<ViewStats> viewStatsList;
+        if (start.isAfter(end)) {
+            throw new BadRequestException("Start of period may not be before it's end.");
+        }
 
-        if (uris == null || uris.isEmpty()) {
+        if (uris == null || uris.length == 0) {
             if (unique) {
-                viewStatsList = statsRepository.findViewStatsWithoutUrisUnigue(start, end, PageRequest.of(0, 10));
+                viewStatsList = statRepository.findViewStatsWithoutUrisUnique(start, end, PageRequest.of(0, 10));
             } else {
-                viewStatsList = statsRepository.findViewStatsWithoutUris(start, end, PageRequest.of(0, 10));
+                viewStatsList = statRepository.findViewStatsWithoutUris(start, end, PageRequest.of(0, 10));
             }
         } else {
             if (unique) {
-                viewStatsList = statsRepository.findViewStatsUniqueIp(start, end, uris);
+                viewStatsList = statRepository.findViewStatsUniqueIp(start, end, uris);
             } else {
-                viewStatsList = statsRepository.findViewStats(start, end, uris);
+                viewStatsList = statRepository.findViewStats(start, end, uris);
             }
         }
 
