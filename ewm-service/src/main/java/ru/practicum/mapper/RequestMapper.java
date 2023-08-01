@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @UtilityClass
 public class RequestMapper {
-    public static Request toRequest(Long userId, Long eventId) {
+    public Request toRequest(Long userId, Long eventId) {
         return Request.builder()
                 .created(LocalDateTime.now())
                 .event(eventId)
@@ -17,7 +17,7 @@ public class RequestMapper {
                 .build();
     }
 
-    public static ParticipationRequestDto toParticipationRequestDto(Request save) {
+    public ParticipationRequestDto toParticipationRequestDto(Request save) {
         return ParticipationRequestDto.builder()
                 .id(save.getId())
                 .created(save.getCreated())

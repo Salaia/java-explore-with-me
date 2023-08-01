@@ -35,7 +35,7 @@ public class EventController {
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
             @RequestParam(defaultValue = "10") @Positive Integer size,
             HttpServletRequest request) {
-        log.info("Requested endpoint: /events getEvents, text: " + text + ", categories: " + categories +
+        log.debug("Requested endpoint: /events getEvents, text: " + text + ", categories: " + categories +
                 ", paid: " + paid + ", rangeStart: " + rangeStart + ", rangeEnd: " + rangeEnd +
                 ", onlyAvailable: " + onlyAvailable + ", sort: " + sort + ", from: " + from + ", size: " + size + ", dto: " + request);
         return eventService.getEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
@@ -44,7 +44,7 @@ public class EventController {
     @GetMapping("/{eventId}")
     public EventFullDto getEventsById(@PathVariable @Positive Long eventId,
                                       HttpServletRequest request) {
-        log.info("Requested endpoint: /events/{eventId} getEventsById c Id = " + eventId + ", dto: " + request);
+        log.debug("Requested endpoint: /events/{eventId} getEventsById c Id = " + eventId + ", dto: " + request);
         return eventService.getEventsById(eventId, request);
     }
 }

@@ -20,7 +20,7 @@ public class CompilationMapper {
                 .build();
     }
 
-    public static CompilationDto toCompilationDto(Compilation compilationSave, List<EventShortDto> eventShortDtos) {
+    public CompilationDto toCompilationDto(Compilation compilationSave, List<EventShortDto> eventShortDtos) {
         return CompilationDto.builder()
                 .events(eventShortDtos)
                 .id(compilationSave.getId())
