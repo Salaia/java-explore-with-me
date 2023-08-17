@@ -24,13 +24,13 @@ public class CompilationController {
     public List<CompilationDto> get(@RequestParam(required = false) Boolean pinned,
                                     @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                     @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.info("Requested endpoint: /compilations/get get, pinned: " + pinned + ", from: " + from + ", size: " + size);
+        log.debug("Requested endpoint: /compilations/get get, pinned: " + pinned + ", from: " + from + ", size: " + size);
         return compilationService.get(pinned, from, size);
     }
 
     @GetMapping("/{compId}")
     public CompilationDto getById(@PathVariable @Positive Long compId) {
-        log.info("Requested endpoint: /compilations/{compId} compId = " + compId);
+        log.debug("Requested endpoint: /compilations/{compId} compId = " + compId);
         return compilationService.getById(compId);
     }
 

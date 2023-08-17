@@ -28,7 +28,7 @@ public class UserController {
     public List<EventShortDto> getEventForUser(@PathVariable @Positive Long userId,
                                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
                                                @RequestParam(defaultValue = "10") @Positive Integer size) {
-        log.info("Requested endpoint: users/{userId}/events getEventByUserId userId = " + userId + ", from: " + from + ", size: " + size);
+        log.debug("Requested endpoint: users/{userId}/events getEventByUserId userId = " + userId + ", from: " + from + ", size: " + size);
         return eventService.getEventForUser(userId, from, size);
     }
 
@@ -36,14 +36,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto createEvent(@PathVariable @Positive Long userId,
                                     @RequestBody @Valid EventCreateDto eventDto) {
-        log.info("Requested endpoint: users/{userId}/events createEvent userId = " + userId + ", dto: " + eventDto);
+        log.debug("Requested endpoint: users/{userId}/events createEvent userId = " + userId + ", dto: " + eventDto);
         return eventService.createEvent(userId, eventDto);
     }
 
     @GetMapping("/{userId}/events/{eventId}")
     public EventFullDto getEventByUserAndEventId(@PathVariable @Positive Long userId,
                                                  @PathVariable @Positive Long eventId) {
-        log.info("Requested endpoint: users/{userId}/events/{eventId} getEventByUserAndEventId userId = " + userId + ", eventId = " + eventId);
+        log.debug("Requested endpoint: users/{userId}/events/{eventId} getEventByUserAndEventId userId = " + userId + ", eventId = " + eventId);
         return eventService.getEventByUserAndEventId(userId, eventId);
     }
 
@@ -51,14 +51,14 @@ public class UserController {
     public EventFullDto updateEvent(@PathVariable @Positive Long userId,
                                     @PathVariable @Positive Long eventId,
                                     @RequestBody @Validated EventUpdateUserDto eventUserRequest) {
-        log.info("Requested endpoint: users/{userId}/events/{eventId} updateEvent userId = " + userId + ", eventId = " + eventId);
+        log.debug("Requested endpoint: users/{userId}/events/{eventId} updateEvent userId = " + userId + ", eventId = " + eventId);
         return eventService.updateEvent(userId, eventId, eventUserRequest);
     }
 
     @GetMapping("/{userId}/events/{eventId}/requests")
     public List<ParticipationRequestDto> getRequestEventByUser(@PathVariable @Positive Long userId,
                                                                @PathVariable @Positive Long eventId) {
-        log.info("Requested endpoint: users/{userId}/events/{eventId}/requests getRequestEventByUser userId = " + userId +
+        log.debug("Requested endpoint: users/{userId}/events/{eventId}/requests getRequestEventByUser userId = " + userId +
                 ", eventId = " + eventId);
         return requestService.getRequestEventByUser(userId, eventId);
     }
@@ -68,7 +68,7 @@ public class UserController {
             @PathVariable @Positive Long userId,
             @PathVariable @Positive Long eventId,
             @RequestBody @Valid EventRequestStatusUpdateRequest statusUpdateRequest) {
-        log.info("Requested endpoint: users/{userId}/events/{eventId}/requests updateRequestEventByUser" +
+        log.debug("Requested endpoint: users/{userId}/events/{eventId}/requests updateRequestEventByUser" +
                 " userId = " + userId + ", eventId = " + eventId);
 
         return requestService.updateRequestStatus(userId, eventId, statusUpdateRequest);
@@ -76,7 +76,7 @@ public class UserController {
 
     @GetMapping("/{userId}/requests")
     public List<ParticipationRequestDto> getAllRequest(@PathVariable @Positive Long userId) {
-        log.info("Requested endpoint: users/{userId}/requests getAllRequest userId = " + userId);
+        log.debug("Requested endpoint: users/{userId}/requests getAllRequest userId = " + userId);
         return requestService.getRequest(userId);
     }
 
@@ -84,7 +84,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addRequest(@PathVariable @Positive Long userId,
                                               @RequestParam(name = "eventId") @Positive Long eventId) {
-        log.info("Requested endpoint: users/{userId}/requests addRequest" +
+        log.debug("Requested endpoint: users/{userId}/requests addRequest" +
                 " userId = " + userId + ", eventId = " + eventId);
         return requestService.addRequest(userId, eventId);
     }
@@ -92,7 +92,7 @@ public class UserController {
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
     public ParticipationRequestDto cancelledRequest(@PathVariable @Positive Long userId,
                                                     @PathVariable @Positive Long requestId) {
-        log.info("Requested endpoint: users/{userId}/requests/{requestId}/cancel cancelledRequest" +
+        log.debug("Requested endpoint: users/{userId}/requests/{requestId}/cancel cancelledRequest" +
                 " userId = " + userId + ", requestId = " + requestId);
         return requestService.updateRequest(userId, requestId);
     }
