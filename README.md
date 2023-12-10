@@ -122,7 +122,12 @@ Explore with me - микросервисное приложение. В прог
 
 <div>
       <img src="https://github.com/Salaia/icons/blob/main/green/Java.png?raw=true" title="Java" alt="Java" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20boot.png?raw=true" title="Spring Boot" alt="Spring Boot" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20MVC.png?raw=true" title="Spring MVC" alt="Spring MVC" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Maven.png?raw=true" title="Apache Maven" alt="Apache Maven" height="40"/>
 </div>
+
+Java, Spring (Boot, MVC), Maven, REST API, Microservice, Hibernate, Mockito, Lombok, JUnit, PostgreSQL, Postman, Docker
 
 ## Инструкция по развёртыванию ▶️
 
