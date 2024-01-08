@@ -137,9 +137,12 @@ Explore with me - микросервисное приложение. В прог
       <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20MVC.png?raw=true" title="Spring MVC" alt="Spring MVC" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/Maven.png?raw=true" title="Apache Maven" alt="Apache Maven" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/Hibernate.png?raw=true" title="Hibernate" alt="Hibernate" height="40"/>
+<img src="https://github.com/Salaia/icons/blob/main/green/PostgreSQL.png?raw=true" alt="PostgreSQL" height="40"/>
+<img src="https://github.com/Salaia/icons/blob/main/green/Postman.png?raw=true" title="Postman" alt="Git" height="40"/>
+<img src="https://github.com/Salaia/icons/blob/main/green/Docker.png?raw=true" title="Docker" alt="Docker" height="40"/>
 </div>
 
-REST API, Microservice, Hibernate, Mockito, Lombok, JUnit, PostgreSQL, Postman, Docker
+REST API, Microservice, Mockito, Lombok
 
 ## Статус и планы по доработке проекта
 
