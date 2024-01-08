@@ -36,6 +36,15 @@ Explore with me - микросервисное приложение. В прог
 * модерация событий, размещённых пользователями, — публикация или отклонение
 * управление пользователями — добавление, активация, просмотр и удаление
 
+## Инструкция по развёртыванию ▶️
+
+1) Склонируйте репозиторий: 
+   https://github.com/Salaia/java-explore-with-me.git
+2) Откройте программу Docker
+3) В терминале или командной строке перейдите в папку проекта (где лежит файл docker-compose.yml) и выполните команду: docker-compose up
+4) В программе Docker должны появиться 4 контейнера
+5) Программа доступна по ниже описанному API
+
 ## API
 
 Примеры использования программы можно увидеть в приложенных Postman тестах в директории: postman
@@ -115,8 +124,10 @@ Explore with me - микросервисное приложение. В прог
 
 ## Testing
 
-* Unit-тесты: 
-* Postman-тесты: postman
+В папке postman находятся коллекции тестов, запускаемых в следующем порядке:
+1. EWM - Main service
+2. EWM - API статистика
+3. EWM - moderation enhancement
 
 ## 🛠 Tech & Tools
 
@@ -125,25 +136,10 @@ Explore with me - микросервисное приложение. В прог
       <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20boot.png?raw=true" title="Spring Boot" alt="Spring Boot" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20MVC.png?raw=true" title="Spring MVC" alt="Spring MVC" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/Maven.png?raw=true" title="Apache Maven" alt="Apache Maven" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Hibernate.png?raw=true" title="Hibernate" alt="Hibernate" height="40"/>
 </div>
 
-Java, Spring (Boot, MVC), Maven, REST API, Microservice, Hibernate, Mockito, Lombok, JUnit, PostgreSQL, Postman, Docker
-
-## Инструкция по развёртыванию ▶️
-
-У каждого микросервиса есть своя база данных.
-Микросервисы и базы данных запускаются в собственных Docker контейнерах (4 шт).
-
-1) Склонируйте репозиторий и перейдите в него
-   https://github.com/Salaia/java-explore-with-me.git
-
-2) Запустите проект в выбранной IDE:
-   * Сначала нужно запустить сервис статистики: stats-server/stats-service/src/main/java/ru/practicum/StatsServer.java
-   * После этого запустите основное приложение: ewm-service/src/main/java/ru/practicum/EwmService.java
-
-3) Проект работает по адресу:
-
-http://localhost:8080/tasks
+REST API, Microservice, Hibernate, Mockito, Lombok, JUnit, PostgreSQL, Postman, Docker
 
 ## Статус и планы по доработке проекта
 
