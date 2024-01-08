@@ -136,13 +136,15 @@ Explore with me - микросервисное приложение. В прог
       <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20boot.png?raw=true" title="Spring Boot" alt="Spring Boot" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/SPRING%20MVC.png?raw=true" title="Spring MVC" alt="Spring MVC" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/Maven.png?raw=true" title="Apache Maven" alt="Apache Maven" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Rest%20API.png?raw=true" title="Rest API" alt="Rest API" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Microservice.png?raw=true" title="Microservice" alt="Microservice" height="40"/>
       <img src="https://github.com/Salaia/icons/blob/main/green/Hibernate.png?raw=true" title="Hibernate" alt="Hibernate" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Lombok.png?raw=true" title="Lombok" alt="Lombok" height="40"/>
+      <img src="https://github.com/Salaia/icons/blob/main/green/Mockito.png?raw=true" title="Mockito" alt="Mockito" height="40"/>
 <img src="https://github.com/Salaia/icons/blob/main/green/PostgreSQL.png?raw=true" alt="PostgreSQL" height="40"/>
 <img src="https://github.com/Salaia/icons/blob/main/green/Postman.png?raw=true" title="Postman" alt="Git" height="40"/>
 <img src="https://github.com/Salaia/icons/blob/main/green/Docker.png?raw=true" title="Docker" alt="Docker" height="40"/>
 </div>
-
-REST API, Microservice, Mockito, Lombok
 
 ## Статус и планы по доработке проекта
 
